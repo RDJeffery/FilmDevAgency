@@ -51,3 +51,5 @@ htmlcov/
 # Gradio
 gradio_cached_examples/
 flagged/
+.gradio/
+.gradio_cache/
