@@ -88,7 +88,7 @@ This will start the Gradio interface where you can interact with the agency.
 
 ### 🪖 Work in Progress
 
-1. Notebook that the team of agents can share and use to collaborate
+1. ~~Notebook that the team of agents can share and use to collaborate~~
 2. A way to save files and documents the agents create
 
 

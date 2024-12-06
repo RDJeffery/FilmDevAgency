@@ -11,6 +11,52 @@
         "tools": [
             {
                 "function": {
+                    "name": "ScriptNotepadTool",
+                    "description": "A collaborative notepad tool for scriptwriter agents to create, review, and edit scripts.\nFeatures include editing, reviewing content, and tracking changes.",
+                    "parameters": {
+                        "properties": {
+                            "agent_id": {
+                                "description": "Unique identifier of the agent using the tool.",
+                                "title": "Agent Id",
+                                "type": "string"
+                            },
+                            "action": {
+                                "description": "Action to perform: 'view', 'edit', or 'unlock'.",
+                                "title": "Action",
+                                "type": "string"
+                            },
+                            "content": {
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
+                                ],
+                                "default": null,
+                                "description": "The content to add or replace when editing.",
+                                "title": "Content"
+                            },
+                            "replace": {
+                                "default": false,
+                                "description": "If True, replaces the notepad's content with the provided content. Defaults to appending.",
+                                "title": "Replace",
+                                "type": "boolean"
+                            }
+                        },
+                        "required": [
+                            "action",
+                            "agent_id"
+                        ],
+                        "type": "object"
+                    },
+                    "strict": false
+                },
+                "type": "function"
+            },
+            {
+                "function": {
                     "name": "SendMessage",
                     "description": "Correctly extracted `SendMessage` with all the required parameters with correct types",
                     "parameters": {
@@ -138,8 +184,8 @@
                     "parameters": {
                         "$defs": {
                             "recipient": {
+                                "const": "Brainstorming Agent",
                                 "enum": [
-                                    "Creative Director",
                                     "Brainstorming Agent"
                                 ],
                                 "title": "recipient",
@@ -153,7 +199,7 @@
                                         "$ref": "#/$defs/recipient"
                                     }
                                 ],
-                                "description": "Creative Director: The Creative Director serves as the main liaison point, coordinating all tasks in the workflow and ensuring alignment with the unified vision. The Creative Director can communicate with all other agents and the user, and handle additional requests from the user.\nBrainstorming Agent: The Brainstorming Agent collaborates with the Researcher to generate story ideas and communicates with the Creative Director, Researcher, and Ideation Agent to ensure the development of innovative story concepts.\n"
+                                "description": "Brainstorming Agent: The Brainstorming Agent collaborates with the Researcher to generate story ideas and communicates with the Creative Director, Researcher, and Ideation Agent to ensure the development of innovative story concepts.\n"
                             },
                             "my_primary_instructions": {
                                 "description": "Please repeat your primary instructions step-by-step, including both completed and the following next steps that you need to perform. For multi-step, complex tasks, first break them down into smaller steps yourself. Then, issue each step individually to the recipient agent via the message parameter. Each identified step should be sent in a separate message. Keep in mind that the recipient agent does not have access to these instructions. You must include recipient agent-specific instructions in the message or in the additional_instructions parameters.",
@@ -427,6 +473,52 @@
         "tools": [
             {
                 "function": {
+                    "name": "ScriptNotepadTool",
+                    "description": "A collaborative notepad tool for scriptwriter agents to create, review, and edit scripts.\nFeatures include editing, reviewing content, and tracking changes.",
+                    "parameters": {
+                        "properties": {
+                            "agent_id": {
+                                "description": "Unique identifier of the agent using the tool.",
+                                "title": "Agent Id",
+                                "type": "string"
+                            },
+                            "action": {
+                                "description": "Action to perform: 'view', 'edit', or 'unlock'.",
+                                "title": "Action",
+                                "type": "string"
+                            },
+                            "content": {
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
+                                ],
+                                "default": null,
+                                "description": "The content to add or replace when editing.",
+                                "title": "Content"
+                            },
+                            "replace": {
+                                "default": false,
+                                "description": "If True, replaces the notepad's content with the provided content. Defaults to appending.",
+                                "title": "Replace",
+                                "type": "boolean"
+                            }
+                        },
+                        "required": [
+                            "action",
+                            "agent_id"
+                        ],
+                        "type": "object"
+                    },
+                    "strict": false
+                },
+                "type": "function"
+            },
+            {
+                "function": {
                     "name": "SendMessage",
                     "description": "Correctly extracted `SendMessage` with all the required parameters with correct types",
                     "parameters": {
@@ -524,6 +616,52 @@
         "name": "Scriptwriter 2",
         "object": "assistant",
         "tools": [
+            {
+                "function": {
+                    "name": "ScriptNotepadTool",
+                    "description": "A collaborative notepad tool for scriptwriter agents to create, review, and edit scripts.\nFeatures include editing, reviewing content, and tracking changes.",
+                    "parameters": {
+                        "properties": {
+                            "agent_id": {
+                                "description": "Unique identifier of the agent using the tool.",
+                                "title": "Agent Id",
+                                "type": "string"
+                            },
+                            "action": {
+                                "description": "Action to perform: 'view', 'edit', or 'unlock'.",
+                                "title": "Action",
+                                "type": "string"
+                            },
+                            "content": {
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
+                                ],
+                                "default": null,
+                                "description": "The content to add or replace when editing.",
+                                "title": "Content"
+                            },
+                            "replace": {
+                                "default": false,
+                                "description": "If True, replaces the notepad's content with the provided content. Defaults to appending.",
+                                "title": "Replace",
+                                "type": "boolean"
+                            }
+                        },
+                        "required": [
+                            "action",
+                            "agent_id"
+                        ],
+                        "type": "object"
+                    },
+                    "strict": false
+                },
+                "type": "function"
+            },
             {
                 "function": {
                     "name": "SendMessage",

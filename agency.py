@@ -48,7 +48,6 @@ logger.info("Setting up agency...")
 agency = Agency([
        creative_director,  # Creative Director will be the entry point for communication with the user 
        [creative_director, researcher],  # Creative Director can initiate communication with Researcher
-       [researcher, creative_director],  # Researcher can initiate communication with Creative Director
        [creative_director, brainstorming_agent],  # Creative Director can initiate communication with Brainstorming Agent
        [creative_director, ideation_agent],  # Creative Director can initiate communication with Ideation Agent
        [creative_director, scriptwriter1],  # Creative Director can initiate communication with Scriptwriter 1
@@ -65,7 +64,8 @@ agency = Agency([
      shared_instructions='./agency_manifesto.md',  # shared instructions for all agents
      temperature=0.3,  # default temperature for all agents
      max_prompt_tokens=25000,  # reduced max tokens to prevent rate limit issues
-)
+     
+               )
 logger.info("Agency setup completed")
 
 if __name__ == '__main__':

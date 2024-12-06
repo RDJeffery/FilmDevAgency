@@ -1,4 +1,5 @@
 from agency_swarm.agents import Agent
+from common_tools.ScriptNotepadTool import ScriptNotepadTool
 
 
 class Scriptwriter2(Agent):
@@ -9,7 +10,7 @@ class Scriptwriter2(Agent):
             instructions="./instructions.md",
             files_folder="./files",
             schemas_folder="./schemas",
-            tools=[],
+            tools=[ScriptNotepadTool],
             tools_folder="./tools",
             temperature=0.3,
             max_prompt_tokens=25000,
