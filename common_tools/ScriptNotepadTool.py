@@ -8,6 +8,8 @@ import time
 notepad_content = ""
 edit_history = []
 locked_by = None
+lock_time = None
+LOCK_TIMEOUT = 60  # Lock expires after 60 seconds
 
 class ScriptNotepadTool(BaseTool):
     """
@@ -22,8 +24,21 @@ class ScriptNotepadTool(BaseTool):
         description="If True, replaces the notepad's content with the provided content. Defaults to appending."
     )
 
+    def check_lock(self):
+        """Check if lock has expired"""
+        global locked_by, lock_time
+        if locked_by and lock_time:
+            if time.time() - lock_time > LOCK_TIMEOUT:
+                locked_by = None
+                lock_time = None
+                return True
+        return False
+
     def run(self):
-        global notepad_content, edit_history, locked_by
+        global notepad_content, edit_history, locked_by, lock_time
+
+        # Check for expired lock
+        self.check_lock()
 
         if self.action == "view":
             return {
@@ -34,32 +49,47 @@ class ScriptNotepadTool(BaseTool):
 
         if self.action == "edit":
             if locked_by is not None and locked_by != self.agent_id:
-                return f"Notepad is currently locked by Agent {locked_by}."
+                return f"Notepad is currently locked by Agent {locked_by}. Please wait and try again."
 
-            locked_by = self.agent_id  # Lock the notepad for editing
-            if self.replace:
-                old_content = notepad_content
-                notepad_content = self.content or ""
-                edit_history.append({
-                    "agent_id": self.agent_id,
-                    "action": "replace",
-                    "old_content": old_content,
-                    "new_content": notepad_content
-                })
-            else:
-                notepad_content += self.content or ""
-                edit_history.append({
-                    "agent_id": self.agent_id,
-                    "action": "append",
-                    "new_content": self.content or ""
-                })
-            return "Edit successful. Notepad locked for editing."
+            # Set or refresh lock
+            locked_by = self.agent_id
+            lock_time = time.time()
+
+            try:
+                if self.replace:
+                    old_content = notepad_content
+                    notepad_content = self.content or ""
+                    edit_history.append({
+                        "agent_id": self.agent_id,
+                        "action": "replace",
+                        "old_content": old_content,
+                        "new_content": notepad_content
+                    })
+                else:
+                    notepad_content += "\n" + (self.content or "")
+                    edit_history.append({
+                        "agent_id": self.agent_id,
+                        "action": "append",
+                        "new_content": self.content or ""
+                    })
+                
+                # Auto-unlock after successful edit
+                locked_by = None
+                lock_time = None
+                return "Edit successful. Notepad automatically unlocked."
+            
+            except Exception as e:
+                # Ensure unlock on error
+                locked_by = None
+                lock_time = None
+                return f"Error during edit: {str(e)}"
 
         if self.action == "unlock":
-            if locked_by != self.agent_id:
-                return f"Only Agent {locked_by} can unlock the notepad."
-            locked_by = None
-            return "Notepad unlocked successfully."
+            if locked_by == self.agent_id or self.check_lock():
+                locked_by = None
+                lock_time = None
+                return "Notepad unlocked successfully."
+            return f"Only Agent {locked_by} can unlock the notepad (or wait for timeout)."
 
         return "Invalid action. Please specify 'view', 'edit', or 'unlock'."
 
